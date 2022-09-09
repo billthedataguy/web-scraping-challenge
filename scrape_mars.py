@@ -19,14 +19,14 @@ def scrape():
     
     browser.visit(url1)   
 
-    time.sleep(2)    
+    time.sleep(1)    
 
     html = browser.html    
 
     soup = bs(html, "html.parser")
     
-    mars_dict["title"] = soup.find("div", class_="content_title").text
-    mars_dict["paragraph"] = soup.find("div", class_="article_teaser_body").text
+    mars_dict["news_title"] = soup.find("div", class_="content_title").text
+    mars_dict["news_paragraph"] = soup.find("div", class_="article_teaser_body").text
     
     #############################
     ## GET FEATURED MARS IMAGE ##
@@ -36,17 +36,16 @@ def scrape():
 
     browser.visit(url2)
 
-    time.sleep(2)    
+    time.sleep(1)    
 
     html = browser.html    
     
     browser.links.find_by_partial_text('FULL IMAGE').click()
 
     image_rel_url = soup.find("img", class_="fancybox-image")["src"]    
-    featured_image_url = f"{url2}{image_rel_url}"
-
+    image_featured_url = f"{url2}{image_rel_url}"
     
-    mars_dict["featured_image_url"] = featured_image_url
+    mars_dict["image_featured_url"] = image_featured_url
     
     ##########################
     ## GET MARS FACTS TABLE ##
@@ -56,7 +55,7 @@ def scrape():
 
     browser.visit(url3)
 
-    time.sleep(2)    
+    time.sleep(1)    
 
     tables = pd.read_html(url3)
 
@@ -68,7 +67,7 @@ def scrape():
 
     html_table = df.to_html()
 
-    html_table.replace('\n', '') 
+    html_table = html_table.replace('\n', '') 
 
     mars_dict["html_table"] = html_table
 
@@ -84,39 +83,54 @@ def scrape():
 
     soup = bs(html, "html.parser")
 
+    # iterate over image_tags and collect tif_titles
+
     image_tags = soup.find_all("img", class_="thumb")
 
-    # iterate over image_tags to get tif_title for each img
+    tif_titles = []
 
-    tif_title = image_tags[0]["alt"].replace(" Enhanced thumbnail", "")
-    tif_title
+    for tag in image_tags:
+        
+        tif_titles.append(tag["alt"].replace(" thumbnail", ""))
+
 
     links_found = browser.find_by_css('h3').links.find_by_partial_text('Hemisphere Enhanced')
-    links_found
+
+    # iterate over links_found and collect tif_urls
+
+    links_found = browser.find_by_css('h3').links.find_by_partial_text('Hemisphere Enhanced')
+
+    tif_urls = []
 
     for link in links_found:
-        img_link = link["href"]
-        print(img_link)
+        
+        img_link = link["href"]    
+            
+        browser.visit(img_link)
 
-    browser.visit(links_found[0]["href"])
+        time.sleep(1)
 
-    time.sleep(2)    
-
-    html = browser.html
-    soup = bs(html, 'html.parser')
-
-    downloads_tags = soup.find("div", class_="downloads")
-
-    img_tags = downloads_tags.find_all("a")
-
-    # iterate over img_tags to get tif_url for each img
-
-    tif_url = f'{url4}{img_tags[1]["href"]}'
-    tif_url
-
-    mars_dict["tif_title"] = tif_title
-    mars_dict["tif_url"] = tif_url
+        html = browser.html
+        soup = bs(html, 'html.parser')
+        
+        downloads_tags = soup.find("div", class_="downloads")    
+        
+        img_tags = downloads_tags.find_all("a")
+        
+        img_url = f'{url4}{img_tags[1]["href"]}'
+        
+        tif_urls.append(img_url)
+        
+        browser.back()
+        
+        time.sleep(1)
+        
+    print("Scrape completed!")
 
     browser.quit()
 
+    tifs = list(zip(tif_titles, tif_urls))
+    
+    mars_dict["tifs"] = tifs  
+    
     return mars_dict
