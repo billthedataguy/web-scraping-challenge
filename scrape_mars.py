@@ -58,7 +58,7 @@ def scrape():
 
     time.sleep(2) 
 
-    tables = pd.read_html(url3)
+    tables = pd.read_html(url3, index_col=None)
 
     df = tables[1]
 
@@ -66,14 +66,14 @@ def scrape():
 
     df["Characteristic"] =  df["Characteristic"].str.rstrip(":")
 
-    html_table = df.to_html()
+    html_table = df.to_html(index=False, index_names=False)
 
-    html_table = html_table.replace('\n', '').replace('<table border="1" class="dataframe"> ', '<table class="table table-striped-columns"> ')
+    html_table = html_table.replace('<table border="1" class="dataframe"> ', '<table border="2" class="table table-striped-columns" id="fact-table"> ')
 
     mars_dict["html_table"] = html_table
 
     ######################################
-    ## GET MARS HEMISPHERES .TIF IMAGES ##
+    ## GET MARS HEMISPHERES IMAGES ##
     ######################################
 
     url4 = 'https://marshemispheres.com/'
@@ -88,12 +88,11 @@ def scrape():
 
     image_tags = soup.find_all("img", class_="thumb")
 
-    tif_titles = []
+    img_titles = []
 
     for tag in image_tags:
         
-        tif_titles.append(tag["alt"].replace(" thumbnail", ""))
-
+        img_titles.append(tag["alt"].replace(" thumbnail", ""))
 
     links_found = browser.find_by_css('h3').links.find_by_partial_text('Hemisphere Enhanced')
 
@@ -101,7 +100,7 @@ def scrape():
 
     links_found = browser.find_by_css('h3').links.find_by_partial_text('Hemisphere Enhanced')
 
-    tif_urls = []
+    jpg_img_urls = []
 
     for link in links_found:
         
@@ -114,13 +113,11 @@ def scrape():
         html = browser.html
         soup = bs(html, 'html.parser')
         
-        downloads_tags = soup.find("div", class_="downloads")    
+        img_tag = soup.find("img", class_="wide-image")    
         
-        img_tags = downloads_tags.find_all("a")
+        img_url = f'{url4}{img_tag["src"]}'         
         
-        img_url = f'{url4}{img_tags[1]["href"]}'
-        
-        tif_urls.append(img_url)
+        jpg_img_urls.append(img_url)
         
         browser.back()
         
@@ -130,8 +127,8 @@ def scrape():
 
     browser.quit()
 
-    tifs = list(zip(tif_titles, tif_urls))
+    photo_data = list(zip(img_titles, jpg_img_urls))
     
-    mars_dict["tifs"] = tifs  
+    mars_dict["photo_data"] = photo_data  
     
     return mars_dict
