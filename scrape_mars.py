@@ -19,7 +19,7 @@ def scrape():
     
     browser.visit(url1)   
 
-    time.sleep(1)    
+    time.sleep(2) 
 
     html = browser.html    
 
@@ -36,11 +36,12 @@ def scrape():
 
     browser.visit(url2)
 
-    time.sleep(1)    
-
-    html = browser.html    
+    time.sleep(2) 
     
     browser.links.find_by_partial_text('FULL IMAGE').click()
+    
+    html = browser.html    
+    soup = bs(html, "html.parser")
 
     image_rel_url = soup.find("img", class_="fancybox-image")["src"]    
     image_featured_url = f"{url2}{image_rel_url}"
@@ -55,7 +56,7 @@ def scrape():
 
     browser.visit(url3)
 
-    time.sleep(1)    
+    time.sleep(2) 
 
     tables = pd.read_html(url3)
 
@@ -67,7 +68,7 @@ def scrape():
 
     html_table = df.to_html()
 
-    html_table = html_table.replace('\n', '') 
+    html_table = html_table.replace('\n', '').replace('<table border="1" class="dataframe"> ', '<table class="table table-striped-columns"> ')
 
     mars_dict["html_table"] = html_table
 
@@ -108,7 +109,7 @@ def scrape():
             
         browser.visit(img_link)
 
-        time.sleep(1)
+        time.sleep(2)   
 
         html = browser.html
         soup = bs(html, 'html.parser')
@@ -123,7 +124,7 @@ def scrape():
         
         browser.back()
         
-        time.sleep(1)
+        time.sleep(2)
         
     print("Scrape completed!")
 

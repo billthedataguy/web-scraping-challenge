@@ -28,11 +28,15 @@
         <div class="card-body text-center">
 
           <h1 class="card-title text-center">Mission to Mars</h1><br>
-          <a href="/scrape" class="btn btn-primary">Scrape New Data</a>
+          <a href="/scrape" class="btn btn-primary btn-lrg" role="button">Scrape New Data</a>
 
         </div>
 
-      </div>
+    </div>
+
+  </div>
+
+  <div class="container col-md-12">
 
     
     <div class="row" id="news_deliverable">
@@ -41,15 +45,73 @@
 
         <h4 class="heading">Latest Mars News</h4>
         <br>
-        <small>{{some_data.news_title}}</small>
+        <small>{{mars_data.news_title}}</small>
         <br>
-        <small>{{some_data.news_paragraph}}</small>
+        <small>{{mars_data.news_paragraph}}</small>
+        <br>
+        
+      </div>
+
+    </div>
+
+    <div class="row" id="featured_image_deliverable">
+
+      <div class="col-md-12">
+
+        <h4 class="heading">Featured Mars Image</h4>
         <br>
 
+        <img src={{ mars_data.image_featured_url }}>
+        <br>
+        
 
       </div>
 
     </div>
+
+    <div class="row" id="table_deliverable">
+
+      <div class="col-md-12">
+
+        <h4 class="heading">Mars Facts</h4>
+        <br>
+        <div class="table-responsive">
+
+          {{ mars_data.html_table }}
+
+        </div> 
+
+        
+
+      </div>
+
+    </div>
+
+    
+    <div class="row" id="tifs_deliverable">
+
+      <div class="col-md-12">
+
+        <h4 class="heading">Mars Hemispheres</h4>
+        <br>
+                  
+        {%    for tif in mars_data.tifs   %}     
+
+                <img src={{ tif[1] }}> 
+                <br>
+                {{  tif[0]  }}
+
+                <br><br><br>
+        
+        {%   endfor    %}
+   
+        <br><br><br>
+
+      </div>
+
+    </div>
+  
+     
 
   </div>
 
