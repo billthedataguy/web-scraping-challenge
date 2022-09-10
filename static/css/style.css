@@ -1,5 +1,27 @@
 /* My CSS Stylsheet */
 
+#banner-card {
+    background-color: lightgray;
+    
+}
 
+.img-card {
+    background-color: white;
+    padding: 10px;
+    margin: 10px;
+    border: 10px;
+       
+}
 
+#feature-img {
+    background-color: white;
+    padding: 10px;
+    margin: 10px;
+    border: 10px;
+    
+}
+
+th {
+    text-align: left;
+  }
 

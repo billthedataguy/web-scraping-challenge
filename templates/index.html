@@ -20,49 +20,50 @@
 <body>
 
   <div class="container col-md-12">
-    <div class="card">        
-        <div class="card-body text-center">
-          <h1 class="card-title text-center">Mission to Mars</h1><br>
-          <a href="/scrape" class="btn btn-primary" role="button">Scrape New Data</a>
+    <div class="card text-center" id="banner-card">        
+        <div class="card-body">
+          <h1 class="heading">Mission to Mars</h1>
+          <a href="/scrape" class="btn btn-primary">Scrape New Data</a>
+          <br><br>
         </div>
     </div>
   </div>
-
-  <div class="container col-md-12">  
+  
+  <div class="container">  
     <div class="row">
       <div class="col-md-12" id="news_deliverable">
-        <h3 class="heading">Latest Mars News</h3>
+        <h5 class="display-5">Latest Mars News</h5>
         <h5>{{mars_data.news_title}}</h5>
         <p>{{mars_data.news_paragraph}}</p>      
       </div>
     </div>  
   </div>
-
-  <div class="container col-md-12">
+  
+  <div class="container">
     <div class="row">
-      <div class="col-md-9" id="featured_image_deliverable">
-        <h3 class="heading">Featured Mars Image</h3>
-        <br>
-        <img src={{ mars_data.image_featured_url }}>
-        <br>
+      <div class="col-md-8" id="featured_image_deliverable">
+        <h4 class="display-4">Featured Mars Image</h4>          
+        <img src={{ mars_data.image_featured_url }} alt="featured mars image" id="feature-img">
       </div>
-
-      <div class="col-md-3" id="table_deliverable">
-        <h3 class="heading">Mars Facts</h3>
-        <br>         
+      
+      <div class="col-6 col-md-4" id="table_deliverable">
+        <h6 class="display-6">Mars Facts</h6>               
         <div class="table-responsive">
-          {{ mars_data.html_table|safe }}
+          
+            {{ mars_data.html_table|safe }}
+
         </div>
       </div>
 
     </div>
   </div>
 
-  <div class="container col-md-12">
+  <div class="container">
     <div class="row" >
       <div class="col-md-12" id="photo_data_deliverable">
-        <h3 class="heading">Mars Hemispheres</h3>
-        <br>    
+        <br><br>
+        <h3 class="display-3 text-center">Mars Hemispheres</h3>
+        <hr>    
       </div>
     </div>
 
@@ -70,8 +71,8 @@
       {%    for (title, url) in mars_data.photo_data   %}    
         
           <div class="col-md-3">                
-              <div class="card" style="width: 18rem;">
-                <img src="{{ url }}" class="card-img-top" alt="...">
+              <div class="card" style="width: 18rem;" class="img-card">
+                <img src="{{ url }}" class="card-img-top" alt="image of {{ title }}">
                 <div class="card-body">
                   <p class="card-text"><h3>{{ title }}</h3></p>
                 </div>

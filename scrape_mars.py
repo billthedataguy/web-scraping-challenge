@@ -58,7 +58,7 @@ def scrape():
 
     time.sleep(2) 
 
-    tables = pd.read_html(url3, index_col=None)
+    tables = pd.read_html(url3)
 
     df = tables[1]
 
@@ -66,9 +66,7 @@ def scrape():
 
     df["Characteristic"] =  df["Characteristic"].str.rstrip(":")
 
-    html_table = df.to_html(index=False, index_names=False)
-
-    html_table = html_table.replace('<table border="1" class="dataframe"> ', '<table border="2" class="table table-striped-columns" id="fact-table"> ')
+    html_table = df.to_html(classes="table table-striped", index=False)
 
     mars_dict["html_table"] = html_table
 
@@ -84,7 +82,7 @@ def scrape():
 
     soup = bs(html, "html.parser")
 
-    # iterate over image_tags and collect tif_titles
+    # iterate over image_tags and collect img_titles
 
     image_tags = soup.find_all("img", class_="thumb")
 
@@ -96,7 +94,7 @@ def scrape():
 
     links_found = browser.find_by_css('h3').links.find_by_partial_text('Hemisphere Enhanced')
 
-    # iterate over links_found and collect tif_urls
+    # iterate over links_found and collect jpg_img_urls
 
     links_found = browser.find_by_css('h3').links.find_by_partial_text('Hemisphere Enhanced')
 
