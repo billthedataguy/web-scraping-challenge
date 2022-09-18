@@ -1,9 +1,13 @@
-/* My CSS Stylsheet */
+/* My CSS Stylesheet */
+
+/* Color header banner  */
 
 #banner-card {
     background-color: lightgray;
     
 }
+
+/* Color and add spacing for news item */
 
 #news_deliverable {
     background-color: white;
@@ -12,6 +16,8 @@
     border: 10px;
 
 }
+
+/* Color and add spacing and rounding to feature image */
 
 #feature-img {
     background-color: white;
@@ -22,9 +28,13 @@
     
 }
 
+/* Left align html table headers */
+
 th {
     text-align: left;
   }
+
+/* Color and add spacing for high-res image cards */
 
 .img-card {
     background-color: white;
@@ -33,4 +43,3 @@ th {
     border: 10px;
            
 }
-

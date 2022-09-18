@@ -1,10 +1,16 @@
+# Dependencies
+
 from splinter import Browser
 from bs4 import BeautifulSoup as bs
 from webdriver_manager.chrome import ChromeDriverManager
 import pandas as pd
 import time
 
+# The scraping function that will be called in app.py
+
 def scrape():
+
+    # Set up splinter browser and initialize dictionary for scraped data
 
     executable_path = {'executable_path': ChromeDriverManager().install()}
     browser = Browser('chrome', **executable_path, headless=False)
@@ -15,13 +21,15 @@ def scrape():
     ## GET MARS NEWS ##
     ###################
     
-    url1 = 'https://redplanetscience.com/'
+    url1 = "https://redplanetscience.com/"
     
     browser.visit(url1)   
 
     time.sleep(2) 
 
     html = browser.html    
+
+    # Soupify
 
     soup = bs(html, "html.parser")
     
@@ -32,7 +40,7 @@ def scrape():
     ## GET FEATURED MARS IMAGE ##
     #############################
 
-    url2 = 'https://spaceimages-mars.com/'
+    url2 = "https://spaceimages-mars.com/"
 
     browser.visit(url2)
 
@@ -41,10 +49,17 @@ def scrape():
     browser.links.find_by_partial_text('FULL IMAGE').click()
     
     html = browser.html    
+
+    # Soupify
+
     soup = bs(html, "html.parser")
+
+    # Drill down into soup for our artefact(s)
 
     image_rel_url = soup.find("img", class_="fancybox-image")["src"]    
     image_featured_url = f"{url2}{image_rel_url}"
+
+    # Store artefact(s) in the dictionary
     
     mars_dict["image_featured_url"] = image_featured_url
     
@@ -58,6 +73,8 @@ def scrape():
 
     time.sleep(2) 
 
+    # Drill down into the html for our artefact(s)
+
     tables = pd.read_html(url3)
 
     df = tables[1]
@@ -68,21 +85,25 @@ def scrape():
 
     html_table = df.to_html(classes="table table-striped", index=False)
 
+    # Store artefact(s) in the dictionary
+
     mars_dict["html_table"] = html_table
 
     ######################################
     ## GET MARS HEMISPHERES IMAGES ##
     ######################################
 
-    url4 = 'https://marshemispheres.com/'
+    url4 = "https://marshemispheres.com/"
 
     browser.visit(url4)    
 
     html = browser.html
 
+    # Soupify
+
     soup = bs(html, "html.parser")
 
-    # iterate over image_tags and collect img_titles
+    # Iterate over image_tags and collect img_titles
 
     image_tags = soup.find_all("img", class_="thumb")
 
@@ -94,7 +115,7 @@ def scrape():
 
     links_found = browser.find_by_css('h3').links.find_by_partial_text('Hemisphere Enhanced')
 
-    # iterate over links_found and collect jpg_img_urls
+    # Iterate over links_found and collect jpg_img_urls
 
     links_found = browser.find_by_css('h3').links.find_by_partial_text('Hemisphere Enhanced')
 
@@ -120,13 +141,21 @@ def scrape():
         browser.back()
         
         time.sleep(2)
+
+    # Courtesy message in the terminal
         
     print("Scrape completed!")
 
     browser.quit()
 
+    # Zip title and urls into a list
+
     photo_data = list(zip(img_titles, jpg_img_urls))
+
+    # Store artefact(s) in the dictionary
     
     mars_dict["photo_data"] = photo_data  
     
+    # Return the scraped mars data dictionary 
+
     return mars_dict
