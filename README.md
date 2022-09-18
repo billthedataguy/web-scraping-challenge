@@ -46,7 +46,7 @@
 
         Jupyter notebook containing all scraping and analysis logic.
 
-4. [Templates/index.html](Templates/index.html)
+4. [Templates/index.html](templates/index.html)
 
         Bootstrap-responsive Jinja2 template with all of the web-scraped Mars data served by Flask app.
 
