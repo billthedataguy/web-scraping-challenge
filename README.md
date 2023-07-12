@@ -1,7 +1,7 @@
 # web-scraping-challenge
 
 ## William Vann
-## Homework 12 - **Mission to Mars**
+## **Mission to Mars**
 
 <br>
 
